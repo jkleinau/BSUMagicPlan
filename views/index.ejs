@@ -5,6 +5,7 @@
 			<th scope="col">#</th>
 			<th scope="col">Id</th>
 			<th scope="col">Projektname</th>
+			<th scope="col">Erstellt von</th>
 			<th scope="col">zuletzt geändert</th>
 			<th scope="col">erstellt am</th>
 			<th scope="col">Actions</th>
@@ -16,6 +17,7 @@
 			<th scope="row"><%= i %></th>
 			<td><%= plan.id %></td>
 			<td><a href="/plan/<%= plan.id %> " class="text-decoration-none"><%= plan.name %></a></td>
+			<td><%= plan.created_by.email %></td>
 			<td><%= plan.update_date.toLocaleDateString() %></td>
 			<td><%= plan.creation_date.toLocaleDateString() %></td>
 			<td>

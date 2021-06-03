@@ -40,6 +40,20 @@ const plan = new mongoose.Schema({
 		type: Date,
 		required: true,
 	},
+	created_by: {
+		id: {
+			type: String,
+		},
+		firstname: {
+			type: String,
+		},
+		lastname: {
+			type: String,
+		},
+		email: {
+			type: String,
+		},
+	},
 	thumbnail_url: {
 		type: String,
 	},
