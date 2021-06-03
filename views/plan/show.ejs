@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<h2 class="display-2 col-md-auto border-bottom border-dark pb-3"><%= plan.name %></h2>
+	<address>
+		<strong>Adresse</strong>
+		<br />
+		<%= plan.address.street %>
+		<br />
+		<%= plan.address.postal_code %>, <%= plan.address.city %>
+		<br />
+		<%= plan.address.country %>
+	</address>
+	<div class="row">
+		<p class="col-1 mb-0">Erstellt am</p>
+		<p class="col-1 mb-0">zuletzt geändert</p>
+		<p class="col-1 mb-0">MagicPlan Id</p>
+	</div>
+	<div class="row">
+		<p class="text-muted col-1 mt-0"><%= plan.creation_date.toLocaleDateString() %></p>
+		<p class="text-muted col-1 mt-0"><%= plan.update_date.toLocaleDateString() %></p>
+		<p class="text-muted col-1 mt-0"><%= plan.id %></p>
+	</div>
+</div>

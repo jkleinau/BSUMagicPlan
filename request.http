@@ -5,7 +5,7 @@ customer: 5c7ef0e0b4132
 
 ###
 
-GET https://cloud.magic-plan.com/api/v2/workgroups/plans/get/60a389c954e48
+GET https://cloud.magicplan.app/api/v2/plans/get/60b4f0ab80595
 accecpt: application/json
 key: dd0c7925689fbf4f2083412497c30f9d2445
 customer: 5c7ef0e0b4132
