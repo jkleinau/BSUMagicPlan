@@ -1,22 +1,50 @@
-<div class="container-md float-center">
-	<h2 class="display-2 col-md-auto border-bottom border-dark pb-3 text-center"><%= plan.name %></h2>
-	<address>
-		<strong>Adresse</strong>
-		<br />
-		<%= plan.address.street %>
-		<br />
-		<%= plan.address.postal_code %>, <%= plan.address.city %>
-		<br />
-		<%= plan.address.country %>
-	</address>
-	<div class="row">
-		<p class="col-1 mb-0">Erstellt am</p>
-		<p class="col-1 mb-0">zuletzt geändert</p>
-		<p class="col-1 mb-0">MagicPlan Id</p>
+<div class="container-fluid float-center bg-dark text-white mt-3">
+	<div class="row border-bottom border-light">
+		<a href="/" class="col-1 text-white text-center py-3 align-middle"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+			<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+		  </svg></i></a>
+		<h2 class="display-2  pb-3 text-center col-10"><%= plan.name %></h2>
 	</div>
-	<div class="row">
-		<p class="text-muted col-1 mt-0"><%= plan.creation_date.toLocaleDateString() %></p>
-		<p class="text-muted col-1 mt-0"><%= plan.update_date.toLocaleDateString() %></p>
-		<p class="text-muted col-1 mt-0"><%= plan.id %></p>
+	<div class="container d-flex p-3 mb-3">
+		<div class="col-6">
+			<address>
+				<strong>Adresse</strong>
+				<br />
+				<%= plan.address.street %>
+				<br />
+				<%= plan.address.postal_code %>, <%= plan.address.city %>
+				<br />
+				<%= plan.address.country %>
+			</address>
+			<div class="row gx-5">
+				<p class="col-4 mb-0">Erstellt am</p>
+				<p class="col-4 mb-0">zuletzt geändert</p>
+				<p class="col-4 mb-0">MagicPlan Id</p>
+			</div>
+			<div class="row gx-5">
+				<p class="text-muted col-4 mt-0"><%= plan.creation_date.toLocaleString() %></p>
+				<p class="text-muted col-4 mt-0"><%= plan.update_date.toLocaleString() %></p>
+				<p class="text-muted col-4 mt-0"><%= plan.id %></p>
+			</div>
+			<div class="row gx-5">
+				<p class="col-4 mb-0">Erstellt von</p>
+				<% if(plan.created_by.firstname) {%> 
+				<p class="col-4 mb-0">Vorname</p>
+				<% } %> 
+				<% if(plan.created_by.lastname) {%> 
+				<p class="col-4 mb-0">Nachname</p>
+				<% } %> 
+			</div>
+			<div class="row gx-5">
+				<p class="text-muted col-4 mt-0"><%= plan.created_by.email %></p>
+				<% if(plan.created_by.firstname) {%> 
+				<p class="text-muted col-4 mt-0"><%= plan.created_by.firstname %></p>
+				<% } %> 
+				<% if(plan.created_by.lastname) {%> 
+				<p class="text-muted col-4 mt-0"><%= plan.created_by.lastname %></p>
+				<% } %> 
+			</div>
+		</div>
+		<img src="<%= plan.thumbnail_url %> " class="img-thumbnail img-fluid rounded float-end col-6" />
 	</div>
 </div>
