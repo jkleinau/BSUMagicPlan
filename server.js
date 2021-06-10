@@ -9,7 +9,7 @@ app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layouts');
 app.use(expressLayout);
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: false }));
-
+app.use(express.static('public'));
 // Connecting to MongoDB database
 
 mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/BSUMagicPlan', {

@@ -39,7 +39,11 @@
 						/>
 					</svg>
 				</a>
-				<a class="btn btn-info <%= plan.xml_file ? '' : 'disabled'%>" type="button">
+				<a
+					class="btn btn-info <%= plan.xml_file ? '' : 'disabled'%>"
+					type="button"
+					href="plan/download/<%= plan.id %> "
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="16"
