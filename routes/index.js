@@ -18,17 +18,27 @@ router.get('/', async (req, res) => {
 	if (req.query.searchTerm != null && req.query.searchTerm != '') {
 		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
 	}
-	req.plans = await query.limit(300).exec();
+	req.plans = await query.limit(50).sort({ update_date: 'desc' }).exec();
 	res.render('index', {
 		plans: req.plans,
 		searchTerm: req.query.searchTerm,
 	});
 });
 
-router.get('/refresh/:page', async (req, res) => {
-	options.url += `&page=${req.params.page}`;
+router.get('/refresh', async (req, res) => {
+	let succes = true;
+	let i = 1;
+	while (succes) {
+		succes = await reload_projects(i);
+		i += 1;
+	}
+
+	res.redirect('/');
+});
+
+async function reload_projects(page) {
 	const response = await fetch(
-		`https://cloud.magic-plan.com/api/v2/workgroups/plans?sort=Plans.update_date&direction=desc&page=${req.params.page}`,
+		`https://cloud.magic-plan.com/api/v2/workgroups/plans?sort=Plans.update_date&direction=desc&page=${page}`,
 		{
 			method: 'GET',
 			headers: {
@@ -65,27 +75,27 @@ router.get('/refresh/:page', async (req, res) => {
 			public_url: plan.public_url,
 		});
 
-		const existingPlan = await Plan.findOne({ id: plan.id })
+		const existingPlan = await Plan.find({ id: plan.id })
 			.exec()
 			.catch((err) => console.error(err));
 		// If the Plan does not exist create a new one and save it
 		if (existingPlan.length == 0) {
-			const newP = await newPlan.save().catch((err) => console.error(err));
+			console.log('saving new plan: ' + newPlan.name);
+			await newPlan.save().catch((err) => console.error(err));
 		} else {
 			// If the Plan already exists but information changed
 			if (new Date(plan.update_date).getTime() > new Date(existingPlan.update_date).getTime()) {
+				console.log('updating existing plan: ' + existingPlan.name);
 				existingPlan = newPlan;
 				const updatedPlan = await existingPlan.save().catch((err) => console.error(err));
 			} else {
 				// If the Plan exists and is up to date
-				console.log('Terminating at Plan');
-				console.log(plan);
-				break;
+				console.log('Terminating at plan ' + plan.name);
+				return false;
 			}
 		}
 	}
-
-	res.redirect('/');
-});
+	return resJson.data.paging.next_page;
+}
 
 module.exports = router;
