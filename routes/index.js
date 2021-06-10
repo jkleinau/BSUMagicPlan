@@ -65,7 +65,7 @@ router.get('/refresh/:page', async (req, res) => {
 			public_url: plan.public_url,
 		});
 
-		const existingPlan = await Plan.find({ id: plan.id })
+		const existingPlan = await Plan.findOne({ id: plan.id })
 			.exec()
 			.catch((err) => console.error(err));
 		// If the Plan does not exist create a new one and save it

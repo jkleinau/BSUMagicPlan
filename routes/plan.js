@@ -56,8 +56,13 @@ router.get('/refresh/:id', async (req, res) => {
 router.get('/download/:id', async (req, res) => {
 	try {
 		const plan = await Plan.findOne({ id: req.params.id });
-		await res.download('./public/processed/' + plan.id + '.xml', plan.name + '-aufmass.xml', (err) => {
-			if (err) console.error(err);
+		await res.download('./public/processed/' + plan.id + '.xml', plan.name + '-aufmass.xml', async (err) => {
+			if (err) {
+				plan.xml_file = false;
+				await plan.save();
+				console.error(err);
+				res.end();
+			}
 		});
 	} catch (e) {
 		console.error(e);
