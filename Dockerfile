@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ENV PORT=80
+ENV PORT=80 DATABASE_URL=mongodb://localhost/BSUMagicPlan MAGIC_URL=https://cloud.magic-plan.com/api/v2=
 
 EXPOSE 80
 
