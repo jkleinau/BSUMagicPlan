@@ -132,6 +132,7 @@ def create_rooms(data, level='0', positions=None):
 
         points = [datapoint for datapoint in room if datapoint.tag == 'point']
 
+        estimate = list()
         try:
             estimate = [est for est in room if est.tag == 'estimate'][0]
         except:

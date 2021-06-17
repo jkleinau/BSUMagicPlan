@@ -15,7 +15,9 @@ let options = {
 
 router.get('/', async (req, res) => {
 	let query = Plan.find();
+
 	if (req.query.searchTerm != null && req.query.searchTerm != '') {
+		req.query.searchTerm = req.query.searchTerm.trim();
 		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
 	}
 	req.plans = await query.limit(50).sort({ update_date: 'desc' }).exec();
