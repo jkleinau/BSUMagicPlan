@@ -45,7 +45,7 @@ router.get('/download/:id', async (req, res) => {
 				// const plan = await Plan.findOne({ id: json.data.plan.id }).catch((err) => console.error(err));
 				// plan.xml_file = true;
 				// const savPlan = await plan.save();
-				await res.download(
+				res.download(
 					'./public/processed/' + json.data.plan.id + '.xml',
 					json.data.plan.name + '-aufmass.xml',
 					async (err) => {
@@ -60,9 +60,7 @@ router.get('/download/:id', async (req, res) => {
 				fs.unlink(path_pre, function (err) {
 					if (err) console.error(err);
 				});
-				fs.unlink(path_post, function (err) {
-					if (err) console.error(err);
-				});
+
 				console.log('conversion completed');
 			}
 		});

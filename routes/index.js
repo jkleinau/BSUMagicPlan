@@ -14,17 +14,52 @@ let options = {
 };
 
 router.get('/', async (req, res) => {
+	let limit = 12;
+	let page = req.params.page || 1;
 	let query = Plan.find();
-
 	if (req.query.searchTerm != null && req.query.searchTerm != '') {
 		req.query.searchTerm = req.query.searchTerm.trim();
 		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
 	}
-	req.plans = await query.limit(50).sort({ update_date: 'desc' }).exec();
-	res.render('index', {
-		plans: req.plans,
-		searchTerm: req.query.searchTerm,
-	});
+	query
+		.skip(limit * page - limit)
+		.limit(limit)
+		.sort({ update_date: 'desc' })
+		.exec(function (err, plans) {
+			Plan.estimatedDocumentCount().exec(function (err, count) {
+				if (err) next(err);
+				res.render('index', {
+					plans: plans,
+					searchTerm: req.query.searchTerm,
+					current: page,
+					pages: Math.ceil(count / limit),
+				});
+			});
+		});
+});
+router.get('/:page', (req, res) => {
+	let limit = 12;
+	let page = req.params.page || 1;
+	let query = Plan.find();
+	if (req.query.searchTerm != null && req.query.searchTerm != '') {
+		req.query.searchTerm = req.query.searchTerm.trim();
+		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
+	}
+	query
+		.skip(limit * page - limit)
+		.limit(limit)
+		.sort({ update_date: 'desc' })
+		.exec(function (err, plans) {
+			Plan.estimatedDocumentCount().exec(function (err, count) {
+				if (err) next(err);
+				res.render('index', {
+					plans: plans,
+					searchTerm: req.query.searchTerm,
+					current: page,
+					pages: Math.ceil(count / limit),
+				});
+			});
+		});
 });
 
 router.get('/refresh', async (req, res) => {
