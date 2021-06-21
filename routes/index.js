@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Plan = require('../models/plan');
 const fetch = require('node-fetch');
+const { find } = require('../models/plan');
 
 let options = {
 	url: 'https://cloud.magic-plan.com/api/v2/workgroups/plans?sort=Plans.update_date&direction=desc',
@@ -16,11 +17,16 @@ let options = {
 router.get('/', async (req, res) => {
 	let limit = 12;
 	let page = req.params.page || 1;
-	let query = Plan.find();
+	let query = null;
 	if (req.query.searchTerm != null && req.query.searchTerm != '') {
 		req.query.searchTerm = req.query.searchTerm.trim();
-		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
+		let re = new RegExp(req.query.searchTerm, 'i');
+		query = Plan.find().or([{ name: { $regex: re } }, { 'created_by.email': { $regex: re } }]);
+		limit = 3000;
+	} else {
+		query = Plan.find();
 	}
+
 	query
 		.skip(limit * page - limit)
 		.limit(limit)
@@ -40,10 +46,14 @@ router.get('/', async (req, res) => {
 router.get('/:page', (req, res) => {
 	let limit = 12;
 	let page = req.params.page || 1;
-	let query = Plan.find();
+	let query = null;
 	if (req.query.searchTerm != null && req.query.searchTerm != '') {
 		req.query.searchTerm = req.query.searchTerm.trim();
-		query = query.regex('name', new RegExp(req.query.searchTerm, 'i'));
+		let re = new RegExp(req.query.searchTerm, 'i');
+		query = Plan.find().or([{ name: { $regex: re } }, { 'created_by.email': { $regex: re } }]);
+		limit = 3000;
+	} else {
+		query = Plan.find();
 	}
 	query
 		.skip(limit * page - limit)
