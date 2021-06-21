@@ -3,17 +3,18 @@ services:
   node:
     restart: always
     build: .
+    environment:
+      - DATABASE_URL=mongodb://mongo:27017/BSUMagicPlan
     ports:
       - 80:3000
     depends_on:
       - mongo
-    volumes:
-      - ./:/code
+
+    links:
+      - mongo
   mongo:
     image: mongo
+    volumes:
+      - ./data:/data/db
     ports:
       - 27017:27017
-    volumes:
-      - mongodb:/data/db
-volumes:
-  mongodb:
