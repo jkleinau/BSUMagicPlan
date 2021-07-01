@@ -43,6 +43,18 @@ router.get('/', async (req, res) => {
 			});
 		});
 });
+
+router.get('/refresh', async (req, res) => {
+	let succes = true;
+	let i = 1;
+	while (succes) {
+		succes = await reload_projects(i);
+		i += 1;
+	}
+
+	res.redirect('/');
+});
+
 router.get('/:page', (req, res) => {
 	let limit = 12;
 	let page = req.params.page || 1;
@@ -70,17 +82,6 @@ router.get('/:page', (req, res) => {
 				});
 			});
 		});
-});
-
-router.get('/refresh', async (req, res) => {
-	let succes = true;
-	let i = 1;
-	while (succes) {
-		succes = await reload_projects(i);
-		i += 1;
-	}
-
-	res.redirect('/');
 });
 
 async function reload_projects(page) {

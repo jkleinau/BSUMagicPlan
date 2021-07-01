@@ -6,6 +6,8 @@ COPY package.json ./
 
 RUN npm install
 
+RUN pip install numpy
+
 COPY . .
 
 ENV PORT=8080 DATABASE_URL=mongodb://mongo:27017/BSUMagicPlan MAGIC_URL=https://cloud.magic-plan.com/api/v2
