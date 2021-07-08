@@ -25,6 +25,7 @@ router.get('/download/:id', async (req, res) => {
 		// saving the xml as a file
 		const path_pre = `public/preprocessed/${json.data.plan.id}.xml`;
 		const path_post = `public/processed/${json.data.plan.id}.xml`;
+
 		fs.writeFile(path_pre, json.data.plan_detail.magicplan_format_xml, function (err) {
 			if (err) throw err;
 			console.log('saved');
