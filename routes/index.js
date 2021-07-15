@@ -98,6 +98,7 @@ async function reload_projects(page) {
 	).catch((err) => console.error(err));
 	const resJson = await response.json().catch((err) => console.error(err));
 	const plans = resJson.data.plans;
+	let succes = true;
 	for (const plan of plans) {
 		const newPlan = new Plan({
 			id: plan.id,
@@ -123,27 +124,27 @@ async function reload_projects(page) {
 			public_url: plan.public_url,
 		});
 
-		const existingPlan = await Plan.find({ id: plan.id })
+		let existingPlan = await Plan.findOne({ id: plan.id })
 			.exec()
 			.catch((err) => console.error(err));
 		// If the Plan does not exist create a new one and save it
-		if (existingPlan.length == 0) {
-			// console.log('saving new plan: ' + newPlan.name);
+		if (existingPlan == null) {
+			console.log('saving new plan: ' + newPlan.name);
 			await newPlan.save().catch((err) => console.error(err));
 		} else {
 			// If the Plan already exists but information changed
 			if (new Date(plan.update_date).getTime() > new Date(existingPlan.update_date).getTime()) {
-				// console.log('updating existing plan: ' + existingPlan.name);
-				existingPlan = newPlan;
-				const updatedPlan = await existingPlan.save().catch((err) => console.error(err));
+				console.log('updating existing plan: ' + existingPlan.name);
+				await existingPlan.delete().catch((err) => console.error(err));
+				await newPlan.save().catch((err) => console.error(err));
 			} else {
 				// If the Plan exists and is up to date
-				// console.log('Terminating at plan ' + plan.name);
-				return false;
+				console.log('Terminating at plan ' + plan.name);
+				succes = false;
 			}
 		}
 	}
-	return resJson.data.paging.next_page;
+	return resJson.data.paging.next_page && succes;
 }
 
 module.exports = router;
