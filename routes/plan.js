@@ -15,10 +15,13 @@ router.get('/', (req, res) => {
 
 router.get('/download/:id', async (req, res) => {
 	try {
+		// console log the current time
+
 		const response = await fetch(`${MAGIC_URL}/plans/get/${req.params.id}`, {
 			method: 'GET',
 			headers: headers,
 		}).catch((e) => console.error(e));
+
 		const json = await response.json().catch((e) => console.error(e));
 
 		// console.log(json);
@@ -28,8 +31,9 @@ router.get('/download/:id', async (req, res) => {
 
 		fs.writeFile(path_pre, json.data.plan_detail.magicplan_format_xml, function (err) {
 			if (err) throw err;
-			console.log('saved');
+			// console.log('saved');
 		});
+
 		const py_converter = spawn('python', [path.resolve('./python/main.py'), path_pre, path_post]);
 
 		py_converter.stdout.on('data', (data) => {
@@ -46,6 +50,7 @@ router.get('/download/:id', async (req, res) => {
 				// const plan = await Plan.findOne({ id: json.data.plan.id }).catch((err) => console.error(err));
 				// plan.xml_file = true;
 				// const savPlan = await plan.save();
+
 				res.download(
 					'./public/processed/' + json.data.plan.id + '.xml',
 					json.data.plan.name + '-aufmass.xml',
@@ -58,11 +63,12 @@ router.get('/download/:id', async (req, res) => {
 						}
 					}
 				);
+
 				fs.unlink(path_pre, function (err) {
 					if (err) console.error(err);
 				});
 
-				console.log('conversion completed');
+				// console.log('conversion completed');
 			}
 		});
 
