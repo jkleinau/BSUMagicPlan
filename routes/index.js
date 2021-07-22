@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Plan = require('../models/plan');
 const fetch = require('node-fetch');
+const { ToadScheduler, SimpleIntervalJob, Task } = require('toad-scheduler');
 const { find } = require('../models/plan');
 
 let options = {
@@ -13,6 +14,13 @@ let options = {
 		customer: '5c7ef0e0b4132',
 	},
 };
+const scheduler = new ToadScheduler();
+
+const task = new Task('refresh projects', () => {
+	reload_projects(1);
+});
+const job = new SimpleIntervalJob({ minutes: 5 }, task);
+scheduler.addSimpleIntervalJob(job);
 
 router.get('/', async (req, res) => {
 	let limit = 12;
