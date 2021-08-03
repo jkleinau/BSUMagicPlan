@@ -21,9 +21,14 @@ def write_data_to_xml_schrift(rooms, path):
         room.write_to_xml(aufmass)
     ET.SubElement(main_pos, 'MENGE').text = '1'
 
+    # Printing Positions to the xml doc but only printing every pos once
+    positions_visited = list()
     for room in rooms:
         for pos in room.positions.values():
-            pos.write_to_xml(positionen)
+            if pos not in positions_visited:
+                positions_visited.append(pos)
+                pos.write_to_xml(positionen)
+
 
     mydata = ET.tostring(project, encoding='ISO-8859-1')
     myfile = open(path, "wb")

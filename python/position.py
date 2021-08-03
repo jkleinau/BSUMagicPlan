@@ -4,7 +4,7 @@ from aufmassZeile import *
 
 class Position:
     def __init__(self, menge=None, artikel_nr=None, positions_nr=None, pos_id=None, uid=None, symbol=None,
-                 aufmass_zeilen=None, links=None, ceiling=None, surface=False):
+                 aufmass_zeilen=None, links=None, ceiling=None, surface=False, ground_ref=None):
         self.surface = surface
         self.ceiling = ceiling
         self.symbol = symbol
@@ -14,6 +14,9 @@ class Position:
         self.artikel_nr = artikel_nr
         self.positions_nr = positions_nr
         self.aufmass_zeilen = aufmass_zeilen
+        self.ground_ref = ground_ref
+        if self.ground_ref is None:
+            self.ground_ref = list()
         if aufmass_zeilen is None:
             self.aufmass_zeilen = list()
         self.links = links

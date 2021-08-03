@@ -6,11 +6,15 @@ class Room:
 
     def __init__(self, name, level, data, x, y,
                  components=None, uid=None,
-                 positions=None):
+                 positions=None, estimate=None):
 
         if positions is None:
             positions = dict()
         self.positions = positions
+
+        if estimate is None:
+            estimate = list()
+        self.estimate = estimate
 
         self.uid = uid
 
