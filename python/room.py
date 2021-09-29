@@ -65,7 +65,8 @@ class Room:
         where width, height and length are the max of the room
         :return: String equation of wall area
         """
-        walls = [component for component in self.components.values() if component.typ == 'Wand']
+        walls = [str(round(component.breite, 2)) for component in self.components.values() if component.typ == 'Wand']
+        return "+".join(walls)
         breite = float()
         laenge = float()
         for i, line in enumerate(walls):
