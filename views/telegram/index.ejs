@@ -1,0 +1,8 @@
+<div class="container">Hello World</div>
+<div class="container">
+	<ul class="list-group">
+		<% subscribers.forEach(sub => { %>
+		<li class="list-group-item"><%= sub.first_name %></li>
+		<% });%>
+	</ul>
+</div>
