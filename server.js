@@ -32,8 +32,10 @@ app.use(function (req, res, next) {
 // Get Routes
 const indexRouter = require('./routes/index');
 const planRouter = require('./routes/plan');
+const telegramRouter = require('./routes/telegram');
 
 app.use('/', indexRouter);
 app.use('/plan', planRouter);
+app.use('/telegram', telegramRouter);
 
 app.listen(process.env.PORT || 3000);
