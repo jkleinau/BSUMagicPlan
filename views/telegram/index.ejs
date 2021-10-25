@@ -1,9 +1,14 @@
-<div class="container">Hello World</div>
-<div class="container">
-	<ul class="list-group">
-		<% subscribers.forEach(sub => { %>
-		<li class="list-group-item"><%= sub.first_name %></li>
-		<% });%>
-	</ul>
-	<pre><%= JSON.stringify(mes, null, 4) %></pre>
+<div class="d-flex">
+	<% subscribers.forEach(sub => { %>
+	<div class="card m-3 w-16 h-16">
+		<div class="card-body">
+			<h5 class="card-title"><%= sub.first_name %> <%= sub.last_name %></h5>
+			<ul class="list-group list-group-flush">
+				<% creators.forEach(creator =>{%>
+				<li class="list-group-item"><%= creator %></li>
+				<% }) %>
+			</ul>
+		</div>
+	</div>
+	<% });%>
 </div>

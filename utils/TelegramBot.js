@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const Subscriber = require('../models/subscriber');
+
 class TelegramBot {
 	constructor(API_KEY, subscriber) {
 		this.API_KEY = API_KEY;
@@ -19,9 +21,9 @@ class TelegramBot {
 		});
 	}
 
-	async messageSubsOf(subTo) {
+	async messageSubsOf(subTo, message) {
 		this.subscriber[subTo].forEach(async (sub) => {
-			await this.sendMessage(sub, 'test');
+			await this.sendMessage(sub, message);
 		});
 	}
 
@@ -40,6 +42,23 @@ class TelegramBot {
 		});
 		const uniqueChats = new Set(chats);
 		return uniqueChats;
+	}
+
+	async checkForNewUsers() {
+		const messages = await this.recieveMessages();
+		const chats = messages['result'].map((message) => {
+			return message['message']['chat'];
+		});
+		const newChats = chats.map(async (chat) => {
+			await Subscriber.countDocuments({ chat_id: chat.id }, async (err, count) => {
+				if (err) {
+					console.error(err);
+				}
+				if (count == 0) {
+					await new Subscriber({ chat_id: chat.id, first_name: chat.first_name, last_name: chat.last_name }).save();
+				}
+			});
+		});
 	}
 }
 module.exports = TelegramBot;

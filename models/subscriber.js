@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const subscriber = new mongoose.Schema({
 	chat_id: {
 		type: 'Number',
+		unique: true,
 	},
 	first_name: {
 		type: 'String',
