@@ -2,10 +2,10 @@ const express = require('express');
 const Plan = require('../models/plan');
 const Subscriber = require('../models/subscriber');
 const fetch = require('node-fetch');
-let TelegramBot = require('../utils/TelegramBot');
+const bot = require('../utils/TelegramBot');
 
 const router = express.Router();
-const bot = new TelegramBot('2089887792:AAEoZEZwKfQUH-7DrPQFa-D9jdzocCcmAe4');
+// const bot = new TelegramBot('2089887792:AAEoZEZwKfQUH-7DrPQFa-D9jdzocCcmAe4');
 
 router.get('/config', async (req, res) => {
 	const messages = await bot.recieveMessages();

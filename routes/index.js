@@ -5,7 +5,7 @@ const Plan = require('../models/plan');
 const fetch = require('node-fetch');
 const { ToadScheduler, SimpleIntervalJob, Task } = require('toad-scheduler');
 const { find } = require('../models/plan');
-
+const bot = require('../utils/TelegramBot');
 let options = {
 	url: 'https://cloud.magic-plan.com/api/v2/workgroups/plans?sort=Plans.update_date&direction=desc',
 	headers: {
@@ -139,6 +139,8 @@ async function reload_projects(page) {
 		if (existingPlan == null) {
 			console.log('saving new plan: ' + newPlan.name);
 			await newPlan.save().catch((err) => console.error(err));
+			const message = `Es wurde ein neues Aufmass hochgeladn ${newPlan.name}`;
+			await bot.messageSubsOf(newPlan.created_by.email, message);
 		} else {
 			// If the Plan already exists but information changed
 			if (new Date(plan.update_date).getTime() > new Date(existingPlan.update_date).getTime()) {

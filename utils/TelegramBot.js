@@ -65,4 +65,6 @@ class TelegramBot {
 		this.subscribers = await Subscriber.find().exec();
 	}
 }
-module.exports = TelegramBot;
+const bot = new TelegramBot('2089887792:AAEoZEZwKfQUH-7DrPQFa-D9jdzocCcmAe4');
+// Object.freeze(bot);
+module.exports = bot;
