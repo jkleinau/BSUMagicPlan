@@ -6,10 +6,10 @@
 			<h6 class="card-subtitle mb-2 text-muted">Auswahl für Messagingdienst</h6>
 			<ul class="list-group list-group-flush">
 				<form class="form-check p-0">
-					<% creators.forEach(creator =>{%>
+					<% publishers.forEach(publisher =>{%>
 					<li class="list-group-item">
-						<input class="form-check-input mx-3" type="checkbox" value="" id="flexCheckChecked" checked />
-						<%= creator %>
+						<input class="form-check-input mx-3" type="checkbox" value="" id="flexCheckChecked" <%=
+						(sub.subscribed_to.includes(publisher)) ? "checked" : "" %>/> <%= publisher %>
 					</li>
 					<% }) %>
 				</form>

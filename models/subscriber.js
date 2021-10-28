@@ -10,7 +10,7 @@ const subscriber = new mongoose.Schema({
 	last_name: {
 		type: 'String',
 	},
-	subscried_to: {
+	subscribed_to: {
 		type: ['String'],
 	},
 });

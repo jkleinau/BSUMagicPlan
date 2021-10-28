@@ -2,10 +2,8 @@ const fetch = require('node-fetch');
 const Subscriber = require('../models/subscriber');
 
 class TelegramBot {
-	constructor(API_KEY, subscriber) {
+	constructor(API_KEY) {
 		this.API_KEY = API_KEY;
-
-		this.subscriber = subscriber;
 	}
 
 	async sendMessage(recipient, message) {
@@ -21,9 +19,11 @@ class TelegramBot {
 		});
 	}
 
-	async messageSubsOf(subTo, message) {
-		this.subscriber[subTo].forEach(async (sub) => {
-			await this.sendMessage(sub, message);
+	async messageSubsOf(publisher, message) {
+		this.subscribers.forEach(async (sub) => {
+			if (sub.subscribed_to.includes(publisher)) {
+				await this.sendMessage(sub.chat_id, message);
+			}
 		});
 	}
 
@@ -59,6 +59,10 @@ class TelegramBot {
 				}
 			});
 		});
+	}
+
+	async loadSubs() {
+		this.subscribers = await Subscriber.find().exec();
 	}
 }
 module.exports = TelegramBot;
