@@ -9,6 +9,7 @@ app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layouts');
 app.use(expressLayout);
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: false }));
+// app.use(bodyParser.json());
 app.use(express.static('public'));
 // Connecting to MongoDB database
 
@@ -33,6 +34,7 @@ app.use(function (req, res, next) {
 const indexRouter = require('./routes/index');
 const planRouter = require('./routes/plan');
 const telegramRouter = require('./routes/telegram');
+const bodyParser = require('body-parser');
 
 app.use('/', indexRouter);
 app.use('/plan', planRouter);

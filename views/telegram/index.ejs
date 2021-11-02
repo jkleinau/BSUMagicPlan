@@ -5,19 +5,20 @@
 			<h5 class="card-title"><%= sub.first_name %> <%= sub.last_name %></h5>
 			<h6 class="card-subtitle mb-2 text-muted">Auswahl für Messagingdienst</h6>
 			<ul class="list-group list-group-flush">
-				<form class="form-check p-0">
+				<form class="form-check p-0" action="/telegram/config" method="post">
 					<% publishers.forEach(publisher =>{%>
 					<li class="list-group-item">
-						<input class="form-check-input mx-3" type="checkbox" value="" id="flexCheckChecked" <%=
-						(sub.subscribed_to.includes(publisher)) ? "checked" : "" %>/> <%= publisher %>
+						<input class="form-check-input mx-3" type="checkbox" value="" name="<%= sub.chat_id+ ':' + publisher%>"
+						id="<%=publisher + '-' + sub.chat_id %>" <%= (sub.subscribed_to.includes(publisher)) ? "checked" : "" %>/>
+						<%= publisher %>
 					</li>
 					<% }) %>
+					<div class="fixed-bottom">
+						<button type="submit" class="btn btn-primary float-end m-3">Speichern</button>
+					</div>
 				</form>
 			</ul>
 		</div>
 	</div>
 	<% });%>
-	<div class="fixed-bottom">
-		<button type="submit" class="btn btn-primary float-end m-3">Speichern</button>
-	</div>
 </div>

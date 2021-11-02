@@ -20,6 +20,23 @@ router.get('/config', async (req, res) => {
 	res.render('telegram/index', { subscribers: subscribers, publishers: publishers });
 });
 
+router.post('/config', async (req, res) => {
+	let subs = {};
+	for (const [key, value] of Object.entries(req.body)) {
+		const [sub, pub] = key.split(':');
+		if (!subs[sub]) {
+			subs[sub] = [];
+		}
+		subs[sub].push(pub);
+	}
+
+	for (const [chat_id, subscribed_to] of Object.entries(subs)) {
+		await Subscriber.updateOne({ chat_id: chat_id }, { $set: { subscribed_to: subscribed_to } });
+	}
+	// console.log(JSON.stringify(subs, null, 4));
+	res.redirect('/telegram/config');
+});
+
 router.get('/messageTest', async (req, res) => {
 	await bot.messageSubsOf('christian.meinke@bsu-projekt-service.de', 'Christian Meinke hat ein neues Projekt erstellt');
 	res.end();
