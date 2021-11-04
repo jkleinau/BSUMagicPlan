@@ -139,7 +139,12 @@ async function reload_projects(page) {
 		if (existingPlan == null) {
 			console.log('saving new plan: ' + newPlan.name);
 			await newPlan.save().catch((err) => console.error(err));
-			const message = `Es wurde ein neues Aufmass hochgeladn ${newPlan.name}`;
+			let options = { weekday: 'long', year: '2-digit', month: 'short', day: 'numeric' };
+
+			const message = `Es wurde ein neues Aufmass hochgeladen: \n am ${newPlan.creation_date.toLocaleDateString(
+				'de-DE',
+				options
+			)}\n Titel: ${newPlan.name} \n von: ${newPlan.created_by.email}`;
 			await bot.messageSubsOf(newPlan.created_by.email, message);
 		} else {
 			// If the Plan already exists but information changed
