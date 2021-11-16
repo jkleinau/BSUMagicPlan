@@ -137,7 +137,7 @@ async function reload_projects(page) {
 			.catch((err) => console.error(err));
 		// If the Plan does not exist create a new one and save it
 		if (existingPlan == null) {
-			console.log('saving new plan: ' + newPlan.name);
+			// console.log('saving new plan: ' + newPlan.name);
 			await newPlan.save().catch((err) => console.error(err));
 			let options = { weekday: 'long', year: '2-digit', month: 'short', day: 'numeric' };
 
@@ -149,12 +149,12 @@ async function reload_projects(page) {
 		} else {
 			// If the Plan already exists but information changed
 			if (new Date(plan.update_date).getTime() > new Date(existingPlan.update_date).getTime()) {
-				console.log('updating existing plan: ' + existingPlan.name);
+				// console.log('updating existing plan: ' + existingPlan.name);
 				await existingPlan.delete().catch((err) => console.error(err));
 				await newPlan.save().catch((err) => console.error(err));
 			} else {
 				// If the Plan exists and is up to date
-				console.log('Terminating at plan ' + plan.name);
+				// console.log('Terminating at plan ' + plan.name);
 				succes = false;
 			}
 		}

@@ -22,7 +22,7 @@ router.get('/config', async (req, res) => {
 
 router.post('/config', async (req, res) => {
 	let subs = {};
-	console.log(`req.body`, req.body);
+	// console.log(`req.body`, req.body);
 	for (const [key, value] of Object.entries(req.body)) {
 		const [sub, pub] = key.split(':');
 		if (!subs[sub]) {
@@ -32,7 +32,7 @@ router.post('/config', async (req, res) => {
 			subs[sub].push(pub);
 		}
 	}
-	console.log(JSON.stringify(subs, null, 4));
+	// console.log(JSON.stringify(subs, null, 4));
 	for (const [chat_id, subscribed_to] of Object.entries(subs)) {
 		await Subscriber.updateOne({ chat_id: chat_id }, { $set: { subscribed_to: subscribed_to } });
 	}
