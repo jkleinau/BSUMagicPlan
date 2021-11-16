@@ -22,26 +22,29 @@
 	<a href="https://t.me/BSUMagicPlanbot" class="text-decoration-none stretched-link" target="_blank"></a>
 </div>
 <div class="d-flex">
-	<% subscribers.forEach(sub => { %>
-	<div class="card m-3 w-16 h-16">
-		<div class="card-body">
-			<h5 class="card-title"><%= sub.first_name %> <%= sub.last_name %></h5>
-			<h6 class="card-subtitle mb-2 text-muted">Auswahl für Messagingdienst</h6>
-			<ul class="list-group list-group-flush">
-				<form class="form-check p-0" action="/telegram/config" method="post">
+	<form class="form-check p-0 d-flex" action="/telegram/config" method="post">
+		<% subscribers.forEach(sub => { %>
+		<div class="card m-3 w-16 h-16">
+			<div class="card-body">
+				<h5 class="card-title"><%= sub.first_name %> <%= sub.last_name %></h5>
+				<h6 class="card-subtitle mb-2 text-muted">Auswahl für Messagingdienst</h6>
+				<ul class="list-group list-group-flush">
 					<% publishers.forEach(publisher =>{%>
 					<li class="list-group-item">
-						<input class="form-check-input mx-3" type="checkbox" value="" name="<%= sub.chat_id+ ':' + publisher%>"
+						<input class="form-check-input mx-3" type="hidden" value="no" name="<%= sub.chat_id+ ':' + publisher%>"
+						id="<%=publisher + '-' + sub.chat_id %>" <%= (sub.subscribed_to.includes(publisher)) ? "checked" : "" %>/>
+						<input class="form-check-input mx-3" type="checkbox" value="yes" name="<%= sub.chat_id+ ':' + publisher%>"
 						id="<%=publisher + '-' + sub.chat_id %>" <%= (sub.subscribed_to.includes(publisher)) ? "checked" : "" %>/>
 						<%= publisher %>
 					</li>
 					<% }) %>
-					<div class="fixed-bottom">
-						<button type="submit" class="btn btn-primary float-end m-3">Speichern</button>
-					</div>
-				</form>
-			</ul>
+				</ul>
+			</div>
+			<div class="fixed-bottom">
+				<button type="submit" class="btn btn-primary float-end m-3">Speichern</button>
+			</div>
 		</div>
-	</div>
-	<% });%>
+
+		<% });%>
+	</form>
 </div>
