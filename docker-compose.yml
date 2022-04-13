@@ -18,3 +18,9 @@ services:
       - ./data:/data/db
     ports:
       - 27017:27017
+
+  web:
+    restart: always
+    image: justuskl/revit_converter:latest
+    ports:
+      - 3000:8080
